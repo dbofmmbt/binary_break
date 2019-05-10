@@ -1,0 +1,3 @@
+global difficulty
+global backgroundColor
+global currentContainer
