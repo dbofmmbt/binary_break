@@ -1,3 +1,4 @@
 global difficulty
 global backgroundColor
 global currentContainer
+global window
