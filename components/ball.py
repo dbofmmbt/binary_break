@@ -2,6 +2,7 @@ from PPlay.sprite import Sprite
 import binary_break.globals as globals
 import random
 
+
 class Ball(Sprite):
     def __init__(self):
         super().__init__("images/ball.png", 8)
@@ -27,21 +28,21 @@ class Ball(Sprite):
     def must_be_inside_window(self):
         if self.x < 0:
             self.set_position(0, self.y)
-            self.collision_change("LEFT")
+            self.collision_change("LATERAL")
         elif self.x+self.width > self.window.width:
             self.set_position(self.window.width-self.width, self.y)
-            self.collision_change("RIGHT")
+            self.collision_change("LATERAL")
         elif self.y < 0:
             self.set_position(self.x, 0)
-            self.collision_change("UP")
-        elif self.y + self.height > self.window.height:
-            self.set_position(self.x, self.window.height-self.height)
-            self.collision_change("DOWN")
+            self.collision_change("VERTICAL")
 
     def collision_change(self, kind):
-        if kind == "UP" or kind == "DOWN":
+        if kind == "VERTICAL":
             self.speed_x *= 1 + random.uniform(-0.1, 0.1)
             self.speed_y *= - 1 - random.uniform(-0.1, 0.1)
-        elif kind == "RIGHT" or kind == "LEFT":
+        elif kind == "LATERAL":
             self.speed_x *= -1 - (random.uniform(-0.1, 0.1))
             self.speed_y *= 1 + random.uniform(-0.1, 0.1)
+
+    def collided_with_bottom(self):
+        return self.y + self.height > self.window.height
