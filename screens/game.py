@@ -1,12 +1,14 @@
 import binary_break.globals as globals
 from binary_break.components.pad import Pad
 from binary_break.components.ball import Ball
+from PPlay.gameimage import GameImage
 
 
 class Game:
     def __init__(self):
         self.window = globals.window
         self.window.set_title("Binary Break!")
+        self.background = GameImage("images/background.jpg")
 
         self.pad = Pad()
         self.ball = Ball()
@@ -18,7 +20,7 @@ class Game:
             self.detect_game_start()
 
     def render(self):
-        self.window.set_background_color(globals.backgroundColor)
+        self.background.draw()
         self.pad.render()
         if self.game_started:
             self.ball.render()
