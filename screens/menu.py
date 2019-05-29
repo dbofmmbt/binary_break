@@ -30,4 +30,4 @@ class Menu:
 
     def put_button_on_position(self, button, height_percentage):
         half_width = self.window.width / 2
-        button.set_position(half_width - button.width/2, self.window.height * height_percentage)
+        button.set_position(half_width - button.width / 2, self.window.height * height_percentage)

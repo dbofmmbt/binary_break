@@ -8,7 +8,7 @@ class Ball(Sprite):
         super().__init__("images/ball.png", 8)
         self.set_total_duration(1000)
         self.window = globals.window
-        self.set_position(self.window.width/2 - self.width/2, self.window.height * 0.85)
+        self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.85)
         self.speed_x = 300 * globals.game_speed
         self.speed_y = -300 * globals.game_speed
 
@@ -29,8 +29,8 @@ class Ball(Sprite):
         if self.x < 0:
             self.set_position(0, self.y)
             self.collision_change("LATERAL")
-        elif self.x+self.width > self.window.width:
-            self.set_position(self.window.width-self.width, self.y)
+        elif self.x + self.width > self.window.width:
+            self.set_position(self.window.width - self.width, self.y)
             self.collision_change("LATERAL")
         elif self.y < 0:
             self.set_position(self.x, 0)

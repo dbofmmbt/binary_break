@@ -7,24 +7,24 @@ class Pad(Sprite):
         super().__init__("images/pad.png")
         self.window = globals.window
         self.keyboard = self.window.get_keyboard()
-        self.set_position(self.window.width/2 - self.width/2, self.window.height * 0.85)
+        self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.85)
         self.speed = 400
 
     def render(self):
-        self.updateLogic()
+        self.update_logic()
         self.draw()
 
-    def updateLogic(self):
-        self.checkMovement()
-        self.mustBeInDisplay()
+    def update_logic(self):
+        self.check_movement()
+        self.must_be_in_display()
 
-    def mustBeInDisplay(self):
+    def must_be_in_display(self):
         if self.x < 0:
             self.set_position(0, self.y)
-        elif self.x+self.width > self.window.width:
-            self.set_position(self.window.width-self.width, self.y)
+        elif self.x + self.width > self.window.width:
+            self.set_position(self.window.width - self.width, self.y)
 
-    def checkMovement(self):
+    def check_movement(self):
         if self.keyboard.key_pressed("RIGHT"):
             self.move_x(self.speed * globals.delta_time)
         elif self.keyboard.key_pressed("LEFT"):
