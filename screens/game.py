@@ -38,6 +38,11 @@ class Game:
             from binary_break.screens.menu import Menu
             globals.currentContainer = Menu()
 
+        for line in self.blocks:
+            for block in line:
+                if self.ball.verify_collision(block):
+                    self.blocks.remove_element(block)
+
     def render(self):
         self.update_logic()
         self.background.draw()

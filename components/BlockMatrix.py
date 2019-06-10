@@ -38,3 +38,9 @@ class BlockMatrix(list):
                 if element.collided_with(sprite):
                     return True
         return False
+
+    def remove_element(self, el):
+        for line in self:
+            if el in line:
+                line.remove(el)
+                return
