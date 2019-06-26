@@ -1,6 +1,5 @@
 from PPlay.sprite import Sprite
 import binary_break.globals as globals
-from binary_break.components import Block
 import random
 
 

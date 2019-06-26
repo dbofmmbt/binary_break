@@ -1,6 +1,5 @@
-from binary_break.components.Block import Block
+from binary_break.components.Block.Block import Block
 import random
-import binary_break.globals as globals
 
 
 class BlockMatrix(list):
