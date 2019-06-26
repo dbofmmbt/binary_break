@@ -9,13 +9,15 @@ class BlockMatrix(list):
         self.colors = (
             "red", "pink", "orange", "blue", "green"
         )
+        self.x = 0
+        self.y = 0
 
     def update_logic(self):
         pass
 
     def add_line(self, quantity):
-        line = [Block(self.colors[random.randint(0, 4)]) for i in range(quantity)]
-        x = 0
+        line = [Block(self.colors[random.randint(0, 4)]) for _ in range(quantity)]
+        x = self.x
         for el in line:
             el.set_position(x, 0)
             x += el.width

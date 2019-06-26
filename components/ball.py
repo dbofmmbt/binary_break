@@ -12,7 +12,8 @@ class Ball(Sprite):
         self.window = globals.window
         self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.85)
         self.speed_x = 300 * globals.game_speed
-        self.speed_y = -300 * globals.game_speed
+        self.speed_y = -400 * globals.game_speed
+        self.min_x = 0
 
     def render(self):
         self.update_logic()
@@ -29,8 +30,8 @@ class Ball(Sprite):
         self.move_y(self.speed_y * globals.delta_time)
 
     def must_be_inside_window(self):
-        if self.x < 0:
-            self.set_position(0, self.y)
+        if self.x < self.min_x:
+            self.set_position(self.min_x, self.y)
             self.collision_change("LATERAL")
         elif self.x + self.width > self.window.width:
             self.set_position(self.window.width - self.width, self.y)

@@ -6,6 +6,7 @@ class Block(Sprite):
     def __init__(self, color):
         image_url = f"images/block/{color}.jpg"
         super().__init__(image_url)
+        self.score_value = 10
 
     def render(self):
         self.update_logic()
