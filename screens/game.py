@@ -14,10 +14,10 @@ class Game:
         x_start_point = self.window.width - self.game_width
         self.pad = Pad(x_start_point)
         self.ball = Ball()
-        self.blocks = BlockMatrix()
+        self.blocks = BlockMatrix(19)
         self.ball.min_x = self.blocks.x = x_start_point
         for i in range(10):
-            self.blocks.add_line(19)
+            self.blocks.add_line()
 
         self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)
         self.game_started = False
@@ -45,7 +45,7 @@ class Game:
 
         for line in self.blocks:
             for block in line:
-                if self.ball.collided(block):
+                if block and self.ball.collided(block):
                     block.handle_collision(self.ball, self.blocks)
                     self.score += block.score_value
 
@@ -76,7 +76,7 @@ class Game:
 
         for line in self.blocks:
             for block in line:
-                block.render()
+                block.render() if block else None
         self.show_score()
 
     def detect_game_start(self):
@@ -86,7 +86,7 @@ class Game:
     def run_block_rain(self):
         self.block_rain_reload -= globals.delta_time
         if self.block_rain_reload < 0:
-            self.blocks.add_line(19)
+            self.blocks.add_line()
             self.block_rain_reload = self.block_rain_speed
 
     def show_score(self):

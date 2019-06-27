@@ -1,10 +1,8 @@
-from binary_break.components.Block.Block import Block
-
 import random
 
 
 class BlockMatrix(list):
-    def __init__(self):
+    def __init__(self, quantity_blocks):
         from binary_break import CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
         self.width = 600
         self.kinds = (
@@ -12,12 +10,13 @@ class BlockMatrix(list):
         )
         self.x = 0
         self.y = 0
+        self.quantity_blocks_line = quantity_blocks
 
     def update_logic(self):
         pass
 
-    def add_line(self, quantity):
-        line = [self.kinds[random.randint(0, 4)]() for _ in range(quantity)]
+    def add_line(self):
+        line = [self.kinds[random.randint(0, 4)]() for _ in range(self.quantity_blocks_line)]
         x = self.x
         for el in line:
             el.set_position(x, 0)
@@ -28,7 +27,7 @@ class BlockMatrix(list):
     def move_lines_down(self):
         for line in self:
             for element in line:
-                element.move_y(element.height)
+                element.move_y(element.height) if element else None
 
     def for_each_element(self, callback):
         for line in self:
@@ -44,6 +43,28 @@ class BlockMatrix(list):
 
     def remove_element(self, el):
         for line in self:
-            if el in line:
-                line.remove(el)
-                return
+            for i in range(len(line)):
+                if line[i] == el:
+                    line[i] = None
+                    return
+
+    def handle_explosion(self, explosive_block):
+        for i in range(len(self)):
+            for j in range(len(self[i])):
+                if self[i][j] == explosive_block:
+                    quantity_exploded = self.explosion_removal(i, j)
+                    explosive_block.update_score(quantity_exploded)
+                    return
+
+    def explosion_removal(self, line, column):
+        start_column = column - 1 if column > 0 else column
+        end_column = column + 1 if column < self.quantity_blocks_line - 1 else column
+        start_line = line - 1 if line > 0 else line
+        end_line = line + 1 if line < len(self) - 1 else line
+        blocks_removed = 0
+
+        for i in range(start_line, end_line + 1):
+            for j in range(start_column, end_column + 1):
+                blocks_removed += 1
+                self[i][j] = None
+        return blocks_removed

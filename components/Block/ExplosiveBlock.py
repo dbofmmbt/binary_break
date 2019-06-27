@@ -9,4 +9,8 @@ class ExplosiveBlock(Block):
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
-        pass
+        ball.handle_collision(self)
+        matrix.handle_explosion(self)
+
+    def update_score(self, blocks_exploded: int):
+        self.score_value += blocks_exploded * 10
