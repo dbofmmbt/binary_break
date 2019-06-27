@@ -10,8 +10,8 @@ class Ball(Sprite):
         self.set_total_duration(1000)
         self.window = globals.window
         self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.85)
-        self.speed_x = 300 * globals.game_speed
-        self.speed_y = -400 * globals.game_speed
+        self.speed_x = 400 * globals.game_speed
+        self.speed_y = -500 * globals.game_speed
         self.min_x = 0
 
     def render(self):

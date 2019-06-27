@@ -8,7 +8,7 @@ class Pad(Sprite):
         self.window = globals.window
         self.keyboard = self.window.get_keyboard()
         self.set_position((self.window.width + min_x - self.width) / 2, self.window.height * 0.85)
-        self.speed = 400
+        self.speed = 600
         self.min_x = min_x
 
     def render(self):
