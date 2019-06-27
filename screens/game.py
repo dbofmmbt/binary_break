@@ -43,6 +43,8 @@ class Game:
             from binary_break.screens.menu import Menu
             globals.currentContainer = Menu()
 
+        self.blocks.update_logic()
+
         for line in self.blocks:
             for block in line:
                 if block and self.ball.collided(block):

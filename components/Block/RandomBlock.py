@@ -9,4 +9,5 @@ class RandomBlock(Block):
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
-        pass
+        matrix.remove_element(self)
+        ball.handle_collision(self)

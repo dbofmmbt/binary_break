@@ -10,10 +10,13 @@ class BlockMatrix(list):
         )
         self.x = 0
         self.y = 0
+        self.quantity_blocks = 0
         self.quantity_blocks_line = quantity_blocks
 
     def update_logic(self):
-        pass
+        blocks_per_line = self.quantity_blocks // len(self)
+        if blocks_per_line < 15 and random.random() > 0.999:
+            self.add_random_block()
 
     def add_line(self):
         line = [self.kinds[random.randint(0, 4)]() for _ in range(self.quantity_blocks_line)]
@@ -23,6 +26,7 @@ class BlockMatrix(list):
             x += el.width
         self.move_lines_down()
         self.insert(0, line)
+        self.quantity_blocks += self.quantity_blocks_line
 
     def move_lines_down(self):
         for line in self:
@@ -46,6 +50,7 @@ class BlockMatrix(list):
             for i in range(len(line)):
                 if line[i] == el:
                     line[i] = None
+                    self.quantity_blocks -= 1
                     return
 
     def handle_explosion(self, explosive_block):
@@ -67,4 +72,20 @@ class BlockMatrix(list):
             for j in range(start_column, end_column + 1):
                 blocks_removed += 1
                 self[i][j] = None
+                self.quantity_blocks -= 1
         return blocks_removed
+
+    def add_random_block(self):
+        from binary_break.components.Block.RandomBlock import RandomBlock
+        block_added = False
+        get_int = random.randrange
+        while not block_added:
+            i, j = get_int(0, len(self)), get_int(0, self.quantity_blocks_line)
+            if self[i][j]:
+                continue
+            else:
+                self[i][j] = RandomBlock()
+                width, height = self[i][j].width, self[i][j].height
+                self[i][j].set_position(self.x + width * j, height * i)
+                self.quantity_blocks += 1
+                block_added = True
