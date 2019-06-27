@@ -50,13 +50,10 @@ class Ball(Sprite):
     def collided_with_bottom(self):
         return self.y + self.height > self.window.height
 
-    def verify_collision(self, element: Sprite):
-        if self.collided(element):
-            if self.speed_y > 0 and self.old_y + self.height < element.y:  # Verifica se a colisão foi de cima pra baixo
-                self.collision_change("VERTICAL")
-            elif self.speed_y < 0 and self.old_y > element.y + element.height:  # Verifica se a colisão é de baixo para cima
-                self.collision_change("VERTICAL")
-            else:
-                self.collision_change("LATERAL")
-            return True
-        return False
+    def handle_collision(self, element: Sprite):
+        if self.speed_y > 0 and self.old_y + self.height < element.y:  # Verifica se a colisão foi de cima pra baixo
+            self.collision_change("VERTICAL")
+        elif self.speed_y < 0 and self.old_y > element.y + element.height:  # Verifica se a colisão é de baixo para cima
+            self.collision_change("VERTICAL")
+        else:
+            self.collision_change("LATERAL")

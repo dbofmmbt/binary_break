@@ -3,10 +3,11 @@ from binary_break.components.BlockMatrix import BlockMatrix
 from binary_break.components.ball import Ball
 
 
-class SpecialBlock(Block):
+class CommonBlock(Block):
     def __init__(self):
-        img_url = "images/block/pink.jpg"
+        img_url = "images/block/green.jpg"
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
-        pass
+        matrix.remove_element(self)
+        ball.handle_collision(self)

@@ -1,12 +1,14 @@
 from binary_break.components.Block.Block import Block
+
 import random
 
 
 class BlockMatrix(list):
     def __init__(self):
+        from binary_break import CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
         self.width = 600
-        self.colors = (
-            "red", "pink", "orange", "blue", "green"
+        self.kinds = (
+            CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
         )
         self.x = 0
         self.y = 0
@@ -15,7 +17,7 @@ class BlockMatrix(list):
         pass
 
     def add_line(self, quantity):
-        line = [Block(self.colors[random.randint(0, 4)]) for _ in range(quantity)]
+        line = [self.kinds[random.randint(0, 4)]() for _ in range(quantity)]
         x = self.x
         for el in line:
             el.set_position(x, 0)

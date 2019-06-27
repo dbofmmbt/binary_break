@@ -45,8 +45,8 @@ class Game:
 
         for line in self.blocks:
             for block in line:
-                if self.ball.verify_collision(block):
-                    self.blocks.remove_element(block)
+                if self.ball.collided(block):
+                    block.handle_collision(self.ball, self.blocks)
                     self.score += block.score_value
 
         self.score_increment_rate -= globals.delta_time

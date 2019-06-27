@@ -3,8 +3,7 @@ import binary_break.globals as globals
 
 
 class Block(Sprite):
-    def __init__(self, color):
-        image_url = f"images/block/{color}.jpg"
+    def __init__(self, image_url):
         super().__init__(image_url)
         self.score_value = 10
 
@@ -17,3 +16,6 @@ class Block(Sprite):
 
     def collided_with(self, obj):
         return self.collided(obj)
+
+    def handle_collision(self, ball, matrix):
+        pass
