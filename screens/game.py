@@ -35,7 +35,7 @@ class Game:
             self.detect_game_start()
             return
         if self.ball.collided(self.pad):
-            self.ball.collision_change("VERTICAL")
+            self.ball.handle_collision(self.pad)
 
         if self.ball.collided_with_bottom():
             self.game_over = True
