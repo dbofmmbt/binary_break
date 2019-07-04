@@ -6,7 +6,7 @@ class BlockMatrix(list):
         from binary_break import CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
         self.width = 600
         self.kinds = (
-            CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
+            CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock#, SpecialBlock, WeakSpotBlock
         )
         self.x = 0
         self.y = 0
@@ -19,7 +19,7 @@ class BlockMatrix(list):
             self.add_random_block()
 
     def add_line(self):
-        line = [self.kinds[random.randint(0, 4)]() for _ in range(self.quantity_blocks_line)]
+        line = [self.kinds[random.randrange(0, len(self.kinds))]() for _ in range(self.quantity_blocks_line)]
         x = self.x
         for el in line:
             el.set_position(x, 0)
@@ -57,23 +57,22 @@ class BlockMatrix(list):
         for i in range(len(self)):
             for j in range(len(self[i])):
                 if self[i][j] == explosive_block:
-                    quantity_exploded = self.explosion_removal(i, j)
-                    explosive_block.update_score(quantity_exploded)
+                    self.explosion_removal(i, j)
                     return
 
     def explosion_removal(self, line, column):
+        from binary_break.components.Block.ExplosiveBlock import ExplosiveBlock
+
         start_column = column - 1 if column > 0 else column
         end_column = column + 1 if column < self.quantity_blocks_line - 1 else column
         start_line = line - 1 if line > 0 else line
         end_line = line + 1 if line < len(self) - 1 else line
-        blocks_removed = 0
 
         for i in range(start_line, end_line + 1):
             for j in range(start_column, end_column + 1):
-                blocks_removed += 1
-                self[i][j] = None
-                self.quantity_blocks -= 1
-        return blocks_removed
+                if type(self[i][j]) is ExplosiveBlock:
+                    self[i][j].should_explode = False
+                self[i][j].handle_collision(ball=None, matrix=self) if self[i][j] else None
 
     def add_random_block(self):
         from binary_break.components.Block.RandomBlock import RandomBlock
