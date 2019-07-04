@@ -1,4 +1,4 @@
 *.pyc
 .pyc
 pyc
-gcomponents/Block/__pycache__/*
+components/Block/__pycache__/*
