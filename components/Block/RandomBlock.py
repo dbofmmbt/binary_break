@@ -10,4 +10,4 @@ class RandomBlock(Block):
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
         matrix.remove_element(self)
-        ball.handle_collision(self)
+        ball.handle_collision(self) if ball else None

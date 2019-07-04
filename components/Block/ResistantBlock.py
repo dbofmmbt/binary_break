@@ -14,7 +14,7 @@ class ResistantBlock(Block):
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
         self.hits_to_explode -= 1
         self.update()
-        ball.handle_collision(self)
+        ball.handle_collision(self) if ball else None
 
         if self.hits_to_explode <= 0:
             matrix.remove_element(self)

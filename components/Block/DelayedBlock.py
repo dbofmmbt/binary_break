@@ -12,7 +12,7 @@ class DelayedBlock(Block):
         self.delay = 3
         self.blink_reload = 0.3
         self.show = True
-        self.ball = self.matrix = None
+        self.matrix = None
 
     def render(self):
         self.update_logic()
@@ -32,7 +32,6 @@ class DelayedBlock(Block):
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
         if not self.was_hit:
             self.matrix = matrix
-            self.ball = ball
             self.show = False
             self.was_hit = True
-        ball.handle_collision(self)
+        ball.handle_collision(self) if ball else None
