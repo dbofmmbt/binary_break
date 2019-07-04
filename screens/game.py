@@ -96,11 +96,11 @@ class Game:
             self.block_rain_reload = self.block_rain_speed
 
     def show_score(self):
-        text = "SCORE: {}".format(self.score)
+        text = "SCORE:{}".format(self.score)
         # text_space = len(text) * 14
         self.window.draw_text(
             text=text,
-            x=20,
+            x=50,
             y=20,
             size=24,
             color=(200, 200, 200),
