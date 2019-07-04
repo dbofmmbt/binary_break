@@ -17,7 +17,7 @@ class Game:
         self.ball = Ball()
         self.blocks = BlockMatrix(19)
         self.ball.min_x = self.blocks.x = x_start_point
-        for i in range(10):
+        for i in range(5):
             self.blocks.add_line()
 
         self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)
