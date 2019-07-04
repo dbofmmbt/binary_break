@@ -5,7 +5,7 @@ from binary_break.components.ball import Ball
 
 class ResistantBlock(Block):
     def __init__(self):
-        img_url = "images/block/green.png"
+        img_url = "images/green.jpg"
         super().__init__(img_url, 3)
         self.set_total_duration(0)
         self.hits_to_explode = 3
