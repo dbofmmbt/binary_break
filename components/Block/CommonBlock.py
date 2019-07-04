@@ -5,7 +5,7 @@ from binary_break.components.ball import Ball
 
 class CommonBlock(Block):
     def __init__(self):
-        img_url = "images/block/green.jpg"
+        img_url = "images/block/gray.png"
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):

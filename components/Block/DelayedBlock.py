@@ -6,7 +6,7 @@ import binary_break.globals as globals
 
 class DelayedBlock(Block):
     def __init__(self):
-        img_url = "images/block/orange.jpg"
+        img_url = "images/block/blue.png"
         super().__init__(img_url)
         self.was_hit = False
         self.delay = 3

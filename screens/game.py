@@ -10,6 +10,7 @@ class Game:
         self.window = globals.window
         self.window.set_title("Binary Break!")
         self.background = GameImage("images/background.jpg")
+        self.lateralbar = GameImage("images/back2.jpg")
         self.game_width = 600
         x_start_point = self.window.width - self.game_width
         self.pad = Pad(x_start_point)
@@ -64,6 +65,9 @@ class Game:
     def render(self):
         self.update_logic()
         self.window.set_background_color(globals.backgroundColor)
+        self.background.draw()
+        self.lateralbar.draw()
+
         if self.game_started:
             self.pad.render()
             self.ball.render()

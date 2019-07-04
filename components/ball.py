@@ -5,11 +5,11 @@ import random
 
 class Ball(Sprite):
     def __init__(self):
-        super().__init__("images/ball.png", 8)
+        super().__init__("images/ball.png")
         self.old_x, self.old_y = self.x, self.y
         self.set_total_duration(1000)
         self.window = globals.window
-        self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.85)
+        self.set_position(self.window.width / 2 - self.width / 2, self.window.height * 0.95)
         self.speed_x = 400 * globals.game_speed
         self.speed_y = -500 * globals.game_speed
         self.min_x = 0

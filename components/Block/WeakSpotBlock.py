@@ -5,7 +5,7 @@ from binary_break.components.ball import Ball
 
 class WeakSpotBlock(Block):
     def __init__(self):
-        img_url = "images/block/orange.jpg"
+        img_url = "images/block/yellow.png"
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):

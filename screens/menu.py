@@ -11,6 +11,7 @@ class Menu:
         self.play = Button("images/menu/play.png")
         self.rank = Button("images/menu/rank.png")
         self.quit = Button("images/menu/quit.png")
+        self.background = GameImage("images/menu/background.png")
 
         self.put_button_on_position(self.play, 0.23)
         self.put_button_on_position(self.rank, 0.43)
@@ -18,7 +19,8 @@ class Menu:
 
     def render(self):
         self.update_logic()
-        self.window.set_background_color((33, 33, 33))
+
+        self.background.draw()
 
         self.play.render()
         self.rank.render()
