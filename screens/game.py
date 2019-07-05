@@ -4,6 +4,7 @@ from binary_break.components.pad import Pad
 from binary_break.components.ball import Ball
 from PPlay.gameimage import GameImage
 from binary_break.components.BlockMatrix import BlockMatrix
+from PPlay.sound import Sound
 
 
 class Game:
@@ -12,9 +13,11 @@ class Game:
         SpecialBlock.add_special_item = self.add_special_item
 
         self.window = globals.window
-        self.window.set_title("Binary Break!")
+        self.window.set_title("Space Breakout")
         self.background = GameImage("images/background.jpg")
         self.lateral_bar = GameImage("images/back2.jpg")
+        self.sound = Sound("sound/gametheme.wav")
+        self.sound.loop = True
         quantity_columns = 10
         self.game_width = SpecialBlock().width * quantity_columns
         self.blocks = BlockMatrix(quantity_columns)
@@ -57,7 +60,6 @@ class Game:
     def update_logic(self):
         self.update_counters()
         self.update_effects()
-
         if not self.game_started and self.lives > 0:
             self.detect_game_start()
             return
@@ -128,6 +130,9 @@ class Game:
 
         self.show_score()
         self.show_lives()
+        self.sound.set_volume(20)
+        self.sound.play()
+        self.sound.set_repeat(True)
 
     def detect_game_start(self):
         if self.window.get_keyboard().key_pressed("SPACE"):

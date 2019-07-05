@@ -7,7 +7,8 @@ from binary_break.screens.game import Game
 items = [
     ("unstoppable", "images/special/boost.png", 1),
     ("game_over", "images/special/morte-subita.png", 1),
-    ("coin_boost", "images/special/coin.png",6)
+    ("coin_boost", "images/special/coin.png",6),
+    ("life", "images/special/life.png", 1)
 ]
 
 
@@ -41,6 +42,9 @@ class Item(Sprite):
             return
         elif self.item[0] == "unstoppable":
             game.ball.speed_y += 50
+        elif self.item[0] == "life":
+            game.lives += 1
+            return
 
         game.effects[self.item[0]].start()
 

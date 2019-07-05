@@ -5,7 +5,7 @@ from binary_break.components.ball import Ball
 
 class RandomBlock(Block):
     def __init__(self):
-        img_url = "images/block/blue.png"
+        img_url = "images/block/yellow.png"
         super().__init__(img_url)
 
     def handle_collision(self, ball: Ball, matrix: BlockMatrix):
