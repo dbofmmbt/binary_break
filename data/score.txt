@@ -12,9 +12,10 @@ kkk 809
 asdas 1051
 asdasd 38
 dwdawd 97
-lçkç 29
+lï¿½kï¿½ 29
 ss 29
 adadsad 2168
+<<<<<<< HEAD
 ss 2989
 ass 30
 adwda 895
@@ -24,3 +25,4 @@ asdasd 35
 sss 349
 awd 109
 sad 427
+Pedro 34
