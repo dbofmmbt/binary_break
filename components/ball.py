@@ -44,17 +44,17 @@ class Ball(Sprite):
 
     def collision_change(self, kind):
         if kind == "VERTICAL":
-            self.speed_x *= 1 + random.uniform(-0.1, 0.1)
-            self.speed_y *= - 1 + random.uniform(-0.1, 0.1)
+            self.speed_x *= 1
+            self.speed_y *= - 1
         elif kind == "LATERAL":
-            self.speed_x *= - 1 + (random.uniform(-0.1, 0.1))
-            self.speed_y *= 1 + random.uniform(-0.1, 0.1)
+            self.speed_x *= - 1
+            self.speed_y *= 1
 
     def collided_with_bottom(self):
         return self.y + self.height > self.window.height
 
     def handle_collision(self, element: Sprite):
-        if self.unstoppable and not type(element) is Pad:
+        if self.unstoppable and not (type(element) is Pad):
             return
 
         if self.speed_y > 0 and self.old_y + self.height < element.y:  # Verifica se a colisão foi de cima pra baixo
@@ -63,3 +63,4 @@ class Ball(Sprite):
             self.collision_change("VERTICAL")
         else:
             self.collision_change("LATERAL")
+

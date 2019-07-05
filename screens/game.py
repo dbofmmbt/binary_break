@@ -64,7 +64,7 @@ class Game:
         if self.ball.collided(self.pad):
             self.ball.handle_collision(self.pad)
 
-        if self.ball.collided_with_bottom():
+        if self.ball.collided_with_bottom() and not self.game_over:
             self.game_over = True
             self.block_rain_counter.start()
 
@@ -91,9 +91,6 @@ class Game:
 
         if self.block_rain_counter.active:
             self.run_block_rain()
-
-        if self.effects["game_over"].active and not self.block_rain_counter.active:
-            self.block_rain_counter.start()
 
         if self.game_over and not self.block_rain_counter.active:
             self.register_score()
@@ -152,7 +149,8 @@ class Game:
         score_file.close()
 
     def add_special_item(self, item):
-        self.items.append(item)
+        if not self.game_over:
+            self.items.append(item)
 
     def put_ball_over_pad(self):
         self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)

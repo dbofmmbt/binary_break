@@ -15,7 +15,7 @@ class BlockMatrix(list):
 
     def update_logic(self):
         blocks_per_line = self.quantity_blocks // len(self)
-        if blocks_per_line < 15 and random.random() > 0.999:
+        if blocks_per_line < 10 and random.random() > 0.999:
             self.add_random_block()
 
     def add_line(self):
