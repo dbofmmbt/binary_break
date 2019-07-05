@@ -4,7 +4,7 @@ from PPlay.sprite import Sprite
 import binary_break.globals as globals
 from binary_break.screens.game import Game
 
-items = [("unstoppable", "images/item/blue.jpg", 1), ("game_over", "images/ball.png", 1)]
+items = [("unstoppable", "images/special/item02.png", 1), ("game_over", "images/special/morte-subita.png", 1)]
 
 
 class Item(Sprite):
