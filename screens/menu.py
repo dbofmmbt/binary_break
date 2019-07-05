@@ -1,13 +1,15 @@
 from binary_break.components.button import Button
 import binary_break.globals as globals
 from PPlay.gameimage import GameImage
+from PPlay.sound import Sound
+
 
 
 class Menu:
     def __init__(self):
         self.window = globals.window
         self.window.set_title("Binary Break Menu")
-
+        self.sound = Sound("sound/menutheme.wav")
         self.play = Button("images/menu/play.png")
         self.rank = Button("images/menu/rank.png")
         self.quit = Button("images/menu/quit.png")
@@ -19,6 +21,7 @@ class Menu:
 
     def render(self):
         self.update_logic()
+        self.sound.play()
 
         self.background.draw()
 
@@ -29,9 +32,11 @@ class Menu:
     def update_logic(self):
         if self.play.clicked():
             from binary_break.screens.game import Game
+            self.sound.pause()
             globals.currentContainer = Game()
         elif self.rank.clicked():
             from binary_break.screens.rank import Rank
+            self.sound.pause()
             globals.currentContainer = Rank()
         elif self.quit.clicked():
             self.window.close()
