@@ -103,11 +103,12 @@ class Game:
         self.background.draw()
         self.lateral_bar.draw()
 
+        self.pad.render()
+
         if self.game_started:
-            self.pad.render()
             self.ball.render()
         else:
-            self.pad.draw()
+            self.put_ball_over_pad()
             self.ball.update()
             self.ball.draw()
 
@@ -115,8 +116,9 @@ class Game:
             for block in line:
                 block.render() if block else None
 
-        for item in self.items:
-            item.render()
+        if not self.game_over:
+            for item in self.items:
+                item.render()
 
         self.show_score()
 
