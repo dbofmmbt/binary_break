@@ -1,5 +1,7 @@
 import random
 
+from binary_break.components.Counter import Counter
+
 
 class BlockMatrix(list):
     def __init__(self, quantity_blocks):
@@ -13,10 +15,19 @@ class BlockMatrix(list):
         self.quantity_blocks = 0
         self.quantity_blocks_line = quantity_blocks
 
+        self.add_line_counter = Counter(7)
+        self.add_line_counter.start()
+
     def update_logic(self):
+        self.add_line_counter.update_logic()
+
         blocks_per_line = self.quantity_blocks // len(self)
         if blocks_per_line < 10 and random.random() > 0.999:
             self.add_random_block()
+
+        if not self.add_line_counter.active:
+            self.add_line()
+            self.add_line_counter.start()
 
     def add_line(self):
         line = [random.choice(self.kinds)() for _ in range(self.quantity_blocks_line)]
