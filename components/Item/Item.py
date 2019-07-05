@@ -5,9 +5,9 @@ import binary_break.globals as globals
 from binary_break.screens.game import Game
 
 items = [
-    ("unstoppable", "images/special/item02.png", 1),
+    ("unstoppable", "images/special/boost.png", 1),
     ("game_over", "images/special/morte-subita.png", 1),
-    ("coin_boost", "images/special/boostpoints.png", 4)
+    ("coin_boost", "images/special/coin.png",6)
 ]
 
 
