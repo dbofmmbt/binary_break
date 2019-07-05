@@ -39,6 +39,8 @@ class Item(Sprite):
         elif self.item[0] == "coin_boost":
             game.update_score(500)
             return
+        elif self.item[0] == "unstoppable":
+            game.ball.speed_y += 50
 
         game.effects[self.item[0]].start()
 

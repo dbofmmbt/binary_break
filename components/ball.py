@@ -48,12 +48,13 @@ class Ball(Sprite):
             self.collision_change("VERTICAL")
 
     def collision_change(self, kind):
+        r = random.uniform(-0.1, 0.1)
         if kind == "VERTICAL":
-            self.speed_x *= 1 + random.uniform(-0.1, 0.1)
-            self.speed_y *= - 1 + random.uniform(-0.1, 0.1)
+            self.speed_x *= 1 + r
+            self.speed_y *= - 1 + r
         elif kind == "LATERAL":
-            self.speed_x *= - 1 + (random.uniform(-0.1, 0.1))
-            self.speed_y *= 1 + random.uniform(-0.1, 0.1)
+            self.speed_x *= - 1 + r
+            self.speed_y *= 1 + r
 
     def collided_with_bottom(self):
         return self.y + self.height > self.window.height

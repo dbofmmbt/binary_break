@@ -165,8 +165,18 @@ class Game:
         self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)
 
     def show_lives(self):
-        for i in range(self.lives):
-            life = GameImage("images/life.png")
-            base_y = 570
-            life.set_position(85, base_y + (i * -200))
-            life.draw()
+        life = GameImage("images/life.png")
+        life.set_position(78, 170)
+        life.draw()
+
+        text = "LIFE:{}".format(self.lives)
+        # text_space = len(text) * 14
+        self.window.draw_text(
+            text=text,
+            x=60,
+            y=245,
+            size=24,
+            color=(200, 200, 200),
+            font_name="Monospace",
+            bold=True
+        )
