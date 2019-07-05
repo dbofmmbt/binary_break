@@ -33,8 +33,9 @@ class Item(Sprite):
     def handle_effect(self, game: Game):
         game.items.remove(self)
 
-        if self.item[0] == "game_over" and not game.game_over:
-            game.block_rain_counter.start()
+        if self.item[0] == "game_over":
+            game.lives -= 1
+            return
         elif self.item[0] == "coin_boost":
             game.update_score(500)
             return

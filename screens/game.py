@@ -15,9 +15,9 @@ class Game:
         self.window.set_title("Binary Break!")
         self.background = GameImage("images/background.jpg")
         self.lateral_bar = GameImage("images/back2.jpg")
-
-        self.game_width = 600
-        self.blocks = BlockMatrix(10)
+        quantity_columns = 10
+        self.game_width = SpecialBlock().width * quantity_columns
+        self.blocks = BlockMatrix(quantity_columns)
         x_start_point = self.window.width - self.game_width
         self.pad = Pad(x_start_point)
         self.ball = Ball()
@@ -28,6 +28,7 @@ class Game:
             self.blocks.add_line()
 
         self.game_started = False
+        self.lives = 3
         self.score = 0
         self.score_increment_rate = 0.1
 
@@ -36,7 +37,7 @@ class Game:
         self.rain_line_counter = Counter(0.03)
 
         self.items = []
-        durable_effects = ("unstoppable", "game_over")
+        durable_effects = ("unstoppable", )
 
         self.effects = {effect: Counter() for effect in durable_effects}
 
@@ -48,7 +49,6 @@ class Game:
 
     def update_effects(self):
         self.ball.unstoppable = self.effects["unstoppable"].active
-        self.game_over = self.game_over or self.effects["game_over"].active
 
     def update_score(self, score):
         if not self.game_over:
@@ -58,13 +58,18 @@ class Game:
         self.update_counters()
         self.update_effects()
 
-        if not self.game_started:
+        if not self.game_started and self.lives > 0:
             self.detect_game_start()
             return
         if self.ball.collided(self.pad):
             self.ball.handle_collision(self.pad)
 
-        if self.ball.collided_with_bottom() and not self.game_over:
+        if self.ball.collided_with_bottom():
+            self.lives -= 1
+            self.ball.collision_change("VERTICAL")
+            self.game_started = False
+
+        if self.lives <= 0 and not self.game_over:
             self.game_over = True
             self.block_rain_counter.start()
 
@@ -73,6 +78,16 @@ class Game:
             globals.currentContainer = Menu()
 
         self.blocks.update_logic()
+
+        if self.block_rain_counter.active:
+            self.run_block_rain()
+
+        if self.game_over:
+            if not self.block_rain_counter.active:
+                self.register_score()
+                from binary_break.screens.menu import Menu
+                globals.currentContainer = Menu()
+            return
 
         for line in self.blocks:
             for block in line:
@@ -85,17 +100,9 @@ class Game:
                 item.handle_effect(self)
 
         self.score_increment_rate -= globals.delta_time
-        if self.score_increment_rate < 0 and not self.game_over:
+        if self.score_increment_rate < 0:
             self.score_increment_rate = 0.1
             self.update_score(1)
-
-        if self.block_rain_counter.active:
-            self.run_block_rain()
-
-        if self.game_over and not self.block_rain_counter.active:
-            self.register_score()
-            from binary_break.screens.menu import Menu
-            globals.currentContainer = Menu()
 
     def render(self):
         self.update_logic()
@@ -109,7 +116,6 @@ class Game:
             self.ball.render()
         else:
             self.put_ball_over_pad()
-            self.ball.update()
             self.ball.draw()
 
         for line in self.blocks:
@@ -121,6 +127,7 @@ class Game:
                 item.render()
 
         self.show_score()
+        self.show_lives()
 
     def detect_game_start(self):
         if self.window.get_keyboard().key_pressed("SPACE"):
@@ -136,7 +143,7 @@ class Game:
         # text_space = len(text) * 14
         self.window.draw_text(
             text=text,
-            x=50,
+            x=45,
             y=40,
             size=24,
             color=(200, 200, 200),
@@ -156,3 +163,10 @@ class Game:
 
     def put_ball_over_pad(self):
         self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)
+
+    def show_lives(self):
+        for i in range(self.lives):
+            life = GameImage("images/life.png")
+            base_y = 570
+            life.set_position(85, base_y + (i * -200))
+            life.draw()
