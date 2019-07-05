@@ -1,4 +1,5 @@
 import binary_break.globals as globals
+from binary_break.components.Counter import Counter
 from binary_break.components.pad import Pad
 from binary_break.components.ball import Ball
 from PPlay.gameimage import GameImage
@@ -7,30 +8,56 @@ from binary_break.components.BlockMatrix import BlockMatrix
 
 class Game:
     def __init__(self):
+        from binary_break import SpecialBlock
+        SpecialBlock.add_special_item = self.add_special_item
+
         self.window = globals.window
         self.window.set_title("Binary Break!")
         self.background = GameImage("images/background.jpg")
-        self.lateralbar = GameImage("images/back2.jpg")
+        self.lateral_bar = GameImage("images/back2.jpg")
+
         self.game_width = 600
+        self.blocks = BlockMatrix(10)
         x_start_point = self.window.width - self.game_width
         self.pad = Pad(x_start_point)
         self.ball = Ball()
-        self.blocks = BlockMatrix(19)
         self.ball.min_x = self.blocks.x = x_start_point
+        self.put_ball_over_pad()
+
         for i in range(5):
             self.blocks.add_line()
 
-        self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)
         self.game_started = False
         self.score = 0
         self.score_increment_rate = 0.1
 
         self.game_over = False
-        self.block_rain_duration = 1.5
-        self.block_rain_speed = 0.03
-        self.block_rain_reload = self.block_rain_speed
+        self.block_rain_counter = Counter(1.5)
+        self.rain_line_counter = Counter(0.03)
+
+        self.items = []
+        durable_effects = ("unstoppable", "game_over")
+
+        self.effects = {effect: Counter() for effect in durable_effects}
+
+    def update_counters(self):
+        self.block_rain_counter.update_logic()
+        self.rain_line_counter.update_logic()
+        for counter in self.effects.values():
+            counter.update_logic()
+
+    def update_effects(self):
+        self.ball.unstoppable = self.effects["unstoppable"].active
+        self.game_over = self.game_over or self.effects["game_over"].active
+
+    def update_score(self, score):
+        if not self.game_over:
+            self.score += score
 
     def update_logic(self):
+        self.update_counters()
+        self.update_effects()
+
         if not self.game_started:
             self.detect_game_start()
             return
@@ -39,6 +66,7 @@ class Game:
 
         if self.ball.collided_with_bottom():
             self.game_over = True
+            self.block_rain_counter.start()
 
         if self.window.get_keyboard().key_pressed("ESC"):
             from binary_break.screens.menu import Menu
@@ -50,14 +78,24 @@ class Game:
             for block in line:
                 if block and self.ball.collided(block):
                     block.handle_collision(self.ball, self.blocks)
-                    self.score += block.score_value
+                    self.update_score(block.score_value)
+
+        for item in self.items:
+            if item.collided(self.pad):
+                item.handle_effect(self)
 
         self.score_increment_rate -= globals.delta_time
         if self.score_increment_rate < 0 and not self.game_over:
             self.score_increment_rate = 0.1
-            self.score += 1
+            self.update_score(1)
 
-        if self.game_over and self.block_rain_duration <= 0:
+        if self.block_rain_counter.active:
+            self.run_block_rain()
+
+        if self.effects["game_over"].active and not self.block_rain_counter.active:
+            self.block_rain_counter.start()
+
+        if self.game_over and not self.block_rain_counter.active:
             self.register_score()
             from binary_break.screens.menu import Menu
             globals.currentContainer = Menu()
@@ -66,7 +104,7 @@ class Game:
         self.update_logic()
         self.window.set_background_color(globals.backgroundColor)
         self.background.draw()
-        self.lateralbar.draw()
+        self.lateral_bar.draw()
 
         if self.game_started:
             self.pad.render()
@@ -76,13 +114,13 @@ class Game:
             self.ball.update()
             self.ball.draw()
 
-        if self.game_over and self.block_rain_duration > 0:
-            self.block_rain_duration -= globals.delta_time
-            self.run_block_rain()
-
         for line in self.blocks:
             for block in line:
                 block.render() if block else None
+
+        for item in self.items:
+            item.render()
+
         self.show_score()
 
     def detect_game_start(self):
@@ -90,10 +128,9 @@ class Game:
             self.game_started = True
 
     def run_block_rain(self):
-        self.block_rain_reload -= globals.delta_time
-        if self.block_rain_reload < 0:
+        if not self.rain_line_counter.active:
             self.blocks.add_line()
-            self.block_rain_reload = self.block_rain_speed
+            self.rain_line_counter.start()
 
     def show_score(self):
         text = "SCORE:{}".format(self.score)
@@ -113,3 +150,9 @@ class Game:
         score_file = open("data/score.txt", "a+")
         score_file.write("{} {}\n".format(name, self.score))
         score_file.close()
+
+    def add_special_item(self, item):
+        self.items.append(item)
+
+    def put_ball_over_pad(self):
+        self.ball.set_position(self.pad.x + self.pad.width / 2 - self.ball.width / 2, self.pad.y - self.ball.height)

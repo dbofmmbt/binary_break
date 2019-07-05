@@ -2,6 +2,8 @@ from PPlay.sprite import Sprite
 import binary_break.globals as globals
 import random
 
+from binary_break.components.pad import Pad
+
 
 class Ball(Sprite):
     def __init__(self):
@@ -13,6 +15,7 @@ class Ball(Sprite):
         self.speed_x = 400 * globals.game_speed
         self.speed_y = -500 * globals.game_speed
         self.min_x = 0
+        self.unstoppable = False
 
     def render(self):
         self.update_logic()
@@ -51,6 +54,9 @@ class Ball(Sprite):
         return self.y + self.height > self.window.height
 
     def handle_collision(self, element: Sprite):
+        if self.unstoppable and not type(element) is Pad:
+            return
+
         if self.speed_y > 0 and self.old_y + self.height < element.y:  # Verifica se a colisão foi de cima pra baixo
             self.collision_change("VERTICAL")
         elif self.speed_y < 0 and self.old_y > element.y + element.height:  # Verifica se a colisão é de baixo para cima

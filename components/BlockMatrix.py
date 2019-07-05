@@ -3,10 +3,10 @@ import random
 
 class BlockMatrix(list):
     def __init__(self, quantity_blocks):
-        from binary_break import CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock, WeakSpotBlock
+        from binary_break import CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock
         self.width = 600
         self.kinds = (
-            CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock#, SpecialBlock, WeakSpotBlock
+            CommonBlock, DelayedBlock, ExplosiveBlock, ResistantBlock, SpecialBlock
         )
         self.x = 0
         self.y = 0
@@ -19,7 +19,7 @@ class BlockMatrix(list):
             self.add_random_block()
 
     def add_line(self):
-        line = [self.kinds[random.randrange(0, len(self.kinds))]() for _ in range(self.quantity_blocks_line)]
+        line = [random.choice(self.kinds)() for _ in range(self.quantity_blocks_line)]
         x = self.x
         for el in line:
             el.set_position(x, 0)
