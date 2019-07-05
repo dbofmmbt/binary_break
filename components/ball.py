@@ -1,4 +1,5 @@
 from PPlay.sprite import Sprite
+from PPlay.gameimage import load_image
 import binary_break.globals as globals
 import random
 
@@ -25,6 +26,10 @@ class Ball(Sprite):
     def update_logic(self):
         self.move()
         self.must_be_inside_window()
+        if self.unstoppable:
+            self.image, self.rect = load_image("images/ball2.png")
+        else:
+            self.image, self.rect = load_image("images/ball.png")
 
     def move(self):
         self.old_x, self.old_y = self.x, self.y
